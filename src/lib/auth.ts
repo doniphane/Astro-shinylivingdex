@@ -4,6 +4,7 @@ import type { AstroCookies } from 'astro';
 
 const JWT_SECRET = import.meta.env.JWT_SECRET || process.env.JWT_SECRET || 'your-super-secret-jwt-key';
 const ACCESS_TOKEN_EXPIRES_IN = '15m'; // 15 minutes
+const USE_HTTPS = (import.meta.env.USE_HTTPS || process.env.USE_HTTPS || 'false') === 'true';
 
 export interface JWTPayload {
 	userId: string;
@@ -52,8 +53,8 @@ export function verifyToken(token: string): JWTPayload | null {
 export function setAccessTokenCookie(cookies: AstroCookies, token: string) {
 	cookies.set('access_token', token, {
 		httpOnly: true,
-		secure: true,
-		sameSite: 'strict',
+		secure: USE_HTTPS,
+		sameSite: USE_HTTPS ? 'strict' : 'lax',
 		path: '/',
 		maxAge: 15 * 60, // 15 minutes
 	});
@@ -89,25 +90,18 @@ export function clearAuthCookies(cookies: AstroCookies) {
 	const cookieNames = ['access_token', 'auth_token'];
 
 	cookieNames.forEach(name => {
-		// Try with secure: true, sameSite: 'strict'
+		// Try with current USE_HTTPS setting
 		cookies.delete(name, {
 			path: '/',
-			secure: true,
-			sameSite: 'strict'
+			secure: USE_HTTPS,
+			sameSite: USE_HTTPS ? 'strict' : 'lax'
 		});
 
-		// Try with secure: true, sameSite: 'lax'
+		// Try with opposite setting in case it was changed
 		cookies.delete(name, {
 			path: '/',
-			secure: true,
-			sameSite: 'lax'
-		});
-
-		// Try with secure: false
-		cookies.delete(name, {
-			path: '/',
-			secure: false,
-			sameSite: 'lax'
+			secure: !USE_HTTPS,
+			sameSite: !USE_HTTPS ? 'strict' : 'lax'
 		});
 
 		// Try with minimal options
