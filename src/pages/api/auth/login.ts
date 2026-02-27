@@ -70,7 +70,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			}
 		);
 	} catch (error) {
-		console.error('Login error:', error);
 		return new Response(JSON.stringify({ error: 'Erreur lors de la connexion' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' },

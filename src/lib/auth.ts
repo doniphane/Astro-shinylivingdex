@@ -74,13 +74,15 @@ export async function verifyRefreshToken(token: string): Promise<{ userId: strin
 			token,
 			isRevoked: false,
 			expiresAt: { $gt: new Date() },
-		}).populate('userId', 'email');
+		}).populate('userId');
 
 		if (!refreshToken) return null;
 
+		const userDoc = refreshToken.userId as any;
+
 		return {
-			userId: refreshToken.userId.toString(),
-			email: (refreshToken.userId as any).email,
+			userId: userDoc._id.toString(),
+			email: userDoc.email,
 		};
 	} catch (error) {
 		return null;

@@ -87,7 +87,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			}
 		);
 	} catch (error) {
-		console.error('Register error:', error);
 		return new Response(JSON.stringify({ error: 'Erreur lors de l\'inscription' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' },

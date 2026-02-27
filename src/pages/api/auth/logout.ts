@@ -22,7 +22,6 @@ export const POST: APIRoute = async ({ cookies }) => {
 			headers: { 'Content-Type': 'application/json' },
 		});
 	} catch (error) {
-		console.error('Logout error:', error);
 		// Clear cookies anyway
 		clearAuthCookies(cookies);
 		return new Response(JSON.stringify({ success: true }), {

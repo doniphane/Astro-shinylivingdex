@@ -57,7 +57,6 @@ export const POST: APIRoute = async ({ cookies }) => {
 			}
 		);
 	} catch (error) {
-		console.error('Refresh token error:', error);
 		return new Response(JSON.stringify({ error: 'Erreur lors du rafraîchissement du token' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' },

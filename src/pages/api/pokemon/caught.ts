@@ -29,7 +29,6 @@ export const GET: APIRoute = async ({ cookies }) => {
 			headers: { 'Content-Type': 'application/json' },
 		});
 	} catch (error) {
-		console.error('Get caught Pokémon error:', error);
 		return new Response(JSON.stringify({ error: 'Erreur lors de la récupération des Pokémon' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' },
@@ -84,7 +83,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			headers: { 'Content-Type': 'application/json' },
 		});
 	} catch (error) {
-		console.error('Catch Pokémon error:', error);
 		return new Response(JSON.stringify({ error: 'Erreur lors de la capture du Pokémon' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' },
@@ -132,7 +130,6 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
 			headers: { 'Content-Type': 'application/json' },
 		});
 	} catch (error) {
-		console.error('Uncatch Pokémon error:', error);
 		return new Response(JSON.stringify({ error: 'Erreur lors de la libération du Pokémon' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' },

@@ -14,14 +14,11 @@ export async function refreshAccessToken(): Promise<boolean> {
 		});
 
 		if (!response.ok) {
-			console.error('Failed to refresh token');
 			return false;
 		}
 
-		console.log('✅ Token refreshed successfully');
 		return true;
 	} catch (error) {
-		console.error('Error refreshing token:', error);
 		return false;
 	}
 }
@@ -40,19 +37,16 @@ export function startAutoRefresh() {
 		const success = await refreshAccessToken();
 		if (!success) {
 			// If refresh fails, redirect to login
-			console.error('Token refresh failed, redirecting to login...');
 			window.location.href = '/login';
 		}
 	}, REFRESH_INTERVAL);
 
-	console.log('🔄 Auto-refresh started (every 14 minutes)');
 }
 
 export function stopAutoRefresh() {
 	if (refreshInterval) {
 		clearInterval(refreshInterval);
 		refreshInterval = null;
-		console.log('⏹️ Auto-refresh stopped');
 	}
 }
 

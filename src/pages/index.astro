@@ -405,7 +405,6 @@ const pokemon = data.results.map((p: any, index: number) => ({
 			caughtPokemon = new Set<number>(data.pokemonIds);
 			applyCaughtState();
 		} catch (error) {
-			console.error('Error loading caught Pokémon:', error);
 		}
 	}
 
@@ -451,7 +450,6 @@ const pokemon = data.results.map((p: any, index: number) => ({
 				throw new Error('Failed to update Pokémon');
 			}
 		} catch (error) {
-			console.error('Error updating Pokémon:', error);
 			// Revert optimistic update
 			if (wasCaught) {
 				caughtPokemon.add(id);
@@ -569,7 +567,6 @@ const pokemon = data.results.map((p: any, index: number) => ({
 			await fetch('/api/auth/logout', { method: 'POST' });
 			window.location.href = '/login';
 		} catch (error) {
-			console.error('Logout error:', error);
 		}
 	});
 
