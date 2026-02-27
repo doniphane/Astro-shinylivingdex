@@ -9,6 +9,11 @@ const JWT_SECRET = import.meta.env.JWT_SECRET || process.env.JWT_SECRET || 'your
 const ACCESS_TOKEN_EXPIRES_IN = '15m'; // 15 minutes
 const REFRESH_TOKEN_EXPIRES_IN = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
 
+// Helper to detect production environment
+const isProduction = () => {
+	return process.env.NODE_ENV === 'production' || import.meta.env.PROD;
+};
+
 export interface JWTPayload {
 	userId: string;
 	email: string;
@@ -96,10 +101,11 @@ export function verifyToken(token: string): JWTPayload | null {
 
 // Set access token cookie (short-lived)
 export function setAccessTokenCookie(cookies: AstroCookies, token: string) {
+	const isProd = isProduction();
 	cookies.set('access_token', token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+		secure: isProd,
+		sameSite: isProd ? 'none' : 'lax',
 		path: '/',
 		maxAge: 15 * 60, // 15 minutes
 	});
@@ -107,10 +113,11 @@ export function setAccessTokenCookie(cookies: AstroCookies, token: string) {
 
 // Set refresh token cookie (long-lived)
 export function setRefreshTokenCookie(cookies: AstroCookies, token: string) {
+	const isProd = isProduction();
 	cookies.set('refresh_token', token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+		secure: isProd,
+		sameSite: isProd ? 'none' : 'lax',
 		path: '/',
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 	});
@@ -159,10 +166,11 @@ export async function revokeRefreshToken(token: string) {
 
 // Clear auth cookies
 export function clearAuthCookies(cookies: AstroCookies) {
+	const isProd = isProduction();
 	const cookieOptions = {
 		path: '/',
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
+		secure: isProd,
+		sameSite: (isProd ? 'none' : 'lax') as const,
 	};
 
 	cookies.delete('access_token', cookieOptions);

@@ -2,6 +2,10 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
+const isProduction = () => {
+	return process.env.NODE_ENV === 'production' || import.meta.env.PROD;
+};
+
 export const GET: APIRoute = async ({ cookies, request }) => {
 	const allCookies = {
 		access_token: cookies.get('access_token')?.value ? 'present' : 'missing',
@@ -16,7 +20,8 @@ export const GET: APIRoute = async ({ cookies, request }) => {
 
 	const env = {
 		NODE_ENV: process.env.NODE_ENV,
-		PROD: import.meta.env.PROD,
+		'import.meta.env.PROD': import.meta.env.PROD,
+		'isProduction()': isProduction(),
 	};
 
 	return new Response(
