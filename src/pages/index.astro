@@ -564,7 +564,11 @@ const pokemon = data.results.map((p: any, index: number) => ({
 		try {
 			const response = await fetch('/api/auth/logout', {
 				method: 'POST',
-				credentials: 'include' // Ensure cookies are sent
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include', // Ensure cookies are sent
+				body: JSON.stringify({}) // Empty body but valid JSON
 			});
 
 			// Redirect regardless of response to ensure logout
