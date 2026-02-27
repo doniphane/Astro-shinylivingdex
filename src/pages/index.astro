@@ -383,8 +383,6 @@ const pokemon = data.results.map((p: any, index: number) => ({
 </style>
 
 <script>
-	import { startAutoRefresh } from '../lib/refreshToken';
-
 	// Caught Pokémon state
 	let caughtPokemon = new Set<number>();
 	let isLoading = false;

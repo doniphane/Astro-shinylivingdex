@@ -4,9 +4,7 @@ import { User } from '../../../models/User';
 import {
 	hashPassword,
 	generateAccessToken,
-	generateRefreshToken,
-	setAccessTokenCookie,
-	setRefreshTokenCookie
+	setAccessTokenCookie
 } from '../../../lib/auth';
 
 export const prerender = false;
@@ -66,12 +64,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			email: user.email,
 		});
 
-		// Generate Refresh Token (30 days)
-		const refreshToken = await generateRefreshToken(user._id.toString());
-
-		// Set cookies
+		// Set cookie
 		setAccessTokenCookie(cookies, accessToken);
-		setRefreshTokenCookie(cookies, refreshToken);
 
 		return new Response(
 			JSON.stringify({
