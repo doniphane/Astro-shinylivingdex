@@ -1,0 +1,360 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getUserFromCookies } from '../lib/auth';
+
+// Check authentication
+const user = getUserFromCookies(Astro.cookies);
+if (!user) {
+	return Astro.redirect('/login');
+}
+
+export const prerender = false;
+---
+
+<Layout>
+	<main class="profile-container">
+		<div class="profile-box">
+			<div class="profile-header">
+				<a href="/" class="back-link">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M19 12H5M12 19l-7-7 7-7"/>
+					</svg>
+					Retour
+				</a>
+				<h1>⚙️ Modifier le profil</h1>
+			</div>
+
+			<form id="update-email-form" class="profile-section">
+				<h2>Modifier l'email</h2>
+				<div class="form-group">
+					<label for="current-email">Email actuel</label>
+					<input
+						type="email"
+						id="current-email"
+						value={user.email}
+						disabled
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="new-email">Nouvel email</label>
+					<input
+						type="email"
+						id="new-email"
+						name="new-email"
+						required
+						autocomplete="email"
+						placeholder="nouveau@email.com"
+					/>
+				</div>
+
+				<div id="email-error" class="error-message"></div>
+				<div id="email-success" class="success-message"></div>
+
+				<button type="submit" class="btn-primary" id="email-submit-btn">
+					Mettre à jour l'email
+				</button>
+			</form>
+
+			<div class="divider"></div>
+
+			<form id="update-password-form" class="profile-section">
+				<h2>Modifier le mot de passe</h2>
+				<div class="form-group">
+					<label for="current-password">Mot de passe actuel</label>
+					<input
+						type="password"
+						id="current-password"
+						name="current-password"
+						required
+						autocomplete="current-password"
+						placeholder="••••••••"
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="new-password">Nouveau mot de passe</label>
+					<input
+						type="password"
+						id="new-password"
+						name="new-password"
+						required
+						autocomplete="new-password"
+						placeholder="••••••••"
+						minlength="6"
+					/>
+					<small>Au moins 6 caractères</small>
+				</div>
+
+				<div class="form-group">
+					<label for="confirm-new-password">Confirmer le nouveau mot de passe</label>
+					<input
+						type="password"
+						id="confirm-new-password"
+						name="confirm-new-password"
+						required
+						autocomplete="new-password"
+						placeholder="••••••••"
+					/>
+				</div>
+
+				<div id="password-error" class="error-message"></div>
+				<div id="password-success" class="success-message"></div>
+
+				<button type="submit" class="btn-primary" id="password-submit-btn">
+					Mettre à jour le mot de passe
+				</button>
+			</form>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.profile-container {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem 1rem;
+	}
+
+	.profile-box {
+		background: #1a1a1a;
+		border: 1px solid #333;
+		border-radius: 12px;
+		padding: 2rem;
+		max-width: 500px;
+		width: 100%;
+	}
+
+	.profile-header {
+		margin-bottom: 2rem;
+	}
+
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: #ffcb05;
+		text-decoration: none;
+		font-size: 0.875rem;
+		margin-bottom: 1rem;
+		transition: opacity 0.2s;
+	}
+
+	.back-link:hover {
+		opacity: 0.8;
+	}
+
+	h1 {
+		margin: 0;
+		font-size: 1.75rem;
+		text-align: center;
+	}
+
+	h2 {
+		margin: 0 0 1rem 0;
+		font-size: 1.25rem;
+		color: #fff;
+	}
+
+	.profile-section {
+		margin-bottom: 2rem;
+	}
+
+	.divider {
+		height: 1px;
+		background: #333;
+		margin: 2rem 0;
+	}
+
+	.form-group {
+		margin-bottom: 1.5rem;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 0.5rem;
+		color: #ccc;
+		font-weight: 500;
+		font-size: 0.875rem;
+	}
+
+	input {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		background: #0f0f0f;
+		border: 1px solid #333;
+		border-radius: 8px;
+		color: #fff;
+		font-size: 1rem;
+		box-sizing: border-box;
+	}
+
+	input:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	input:focus:not(:disabled) {
+		outline: none;
+		border-color: #ffcb05;
+	}
+
+	small {
+		display: block;
+		margin-top: 0.25rem;
+		color: #666;
+		font-size: 0.875rem;
+	}
+
+	.error-message,
+	.success-message {
+		margin-bottom: 1rem;
+		padding: 0.75rem;
+		border-radius: 8px;
+		display: none;
+		font-size: 0.875rem;
+	}
+
+	.error-message {
+		color: #ff4444;
+		background: rgba(255, 68, 68, 0.1);
+		border: 1px solid #ff4444;
+	}
+
+	.success-message {
+		color: #4CAF50;
+		background: rgba(76, 175, 80, 0.1);
+		border: 1px solid #4CAF50;
+	}
+
+	.error-message.show,
+	.success-message.show {
+		display: block;
+	}
+
+	.btn-primary {
+		width: 100%;
+		padding: 0.875rem;
+		background: #ffcb05;
+		color: #000;
+		border: none;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.btn-primary:hover {
+		background: #e6b800;
+	}
+
+	.btn-primary:disabled {
+		background: #666;
+		cursor: not-allowed;
+	}
+</style>
+
+<script>
+	// Update Email Form
+	const emailForm = document.getElementById('update-email-form') as HTMLFormElement;
+	const emailError = document.getElementById('email-error') as HTMLDivElement;
+	const emailSuccess = document.getElementById('email-success') as HTMLDivElement;
+	const emailSubmitBtn = document.getElementById('email-submit-btn') as HTMLButtonElement;
+
+	emailForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
+
+		const formData = new FormData(emailForm);
+		const newEmail = formData.get('new-email') as string;
+
+		// Hide messages
+		emailError.classList.remove('show');
+		emailSuccess.classList.remove('show');
+		emailSubmitBtn.disabled = true;
+		emailSubmitBtn.textContent = 'Mise à jour...';
+
+		try {
+			const response = await fetch('/api/user/update-email', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ newEmail }),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || 'Erreur de mise à jour');
+			}
+
+			emailSuccess.textContent = 'Email mis à jour avec succès !';
+			emailSuccess.classList.add('show');
+			emailForm.reset();
+
+			// Redirect to login after 2 seconds
+			setTimeout(() => {
+				window.location.href = '/login';
+			}, 2000);
+		} catch (error) {
+			emailError.textContent = error instanceof Error ? error.message : 'Erreur de mise à jour';
+			emailError.classList.add('show');
+			emailSubmitBtn.disabled = false;
+			emailSubmitBtn.textContent = 'Mettre à jour l\'email';
+		}
+	});
+
+	// Update Password Form
+	const passwordForm = document.getElementById('update-password-form') as HTMLFormElement;
+	const passwordError = document.getElementById('password-error') as HTMLDivElement;
+	const passwordSuccess = document.getElementById('password-success') as HTMLDivElement;
+	const passwordSubmitBtn = document.getElementById('password-submit-btn') as HTMLButtonElement;
+
+	passwordForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
+
+		const formData = new FormData(passwordForm);
+		const currentPassword = formData.get('current-password') as string;
+		const newPassword = formData.get('new-password') as string;
+		const confirmPassword = formData.get('confirm-new-password') as string;
+
+		// Hide messages
+		passwordError.classList.remove('show');
+		passwordSuccess.classList.remove('show');
+
+		// Validate passwords match
+		if (newPassword !== confirmPassword) {
+			passwordError.textContent = 'Les nouveaux mots de passe ne correspondent pas';
+			passwordError.classList.add('show');
+			return;
+		}
+
+		passwordSubmitBtn.disabled = true;
+		passwordSubmitBtn.textContent = 'Mise à jour...';
+
+		try {
+			const response = await fetch('/api/user/update-password', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ currentPassword, newPassword }),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || 'Erreur de mise à jour');
+			}
+
+			passwordSuccess.textContent = 'Mot de passe mis à jour avec succès !';
+			passwordSuccess.classList.add('show');
+			passwordForm.reset();
+		} catch (error) {
+			passwordError.textContent = error instanceof Error ? error.message : 'Erreur de mise à jour';
+			passwordError.classList.add('show');
+		} finally {
+			passwordSubmitBtn.disabled = false;
+			passwordSubmitBtn.textContent = 'Mettre à jour le mot de passe';
+		}
+	});
+</script>

@@ -1,0 +1,404 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// If already logged in, redirect to home
+import { getUserFromCookies } from '../lib/auth';
+const user = getUserFromCookies(Astro.cookies);
+if (user) {
+	return Astro.redirect('/');
+}
+
+export const prerender = false;
+---
+
+<Layout>
+	<main class="landing-container">
+		<!-- Hero Section -->
+		<section class="hero-section">
+			<div class="hero-content">
+				<div class="logo-container">
+					<span class="logo-icon">✨🎮</span>
+				</div>
+				<h1 class="hero-title">Kurozandex</h1>
+				<p class="hero-subtitle">Votre Shiny Living Dex Personnel</p>
+
+				<div class="description-box">
+					<p class="description">
+						Bienvenue sur <strong>Kurozandex</strong>, l'application de Shiny Living Dex
+						créée spécialement pour la <strong>Team Kuroizana</strong> et sa communauté !
+					</p>
+					<p class="description">
+						Suivez votre progression dans la chasse aux Pokémon chromatiques,
+						gérez votre collection, partagez vos captures avec la communauté et
+						rejoignez les autres chasseurs de shinies.
+					</p>
+				</div>
+
+				<div class="features">
+					<div class="feature">
+						<span class="feature-icon">📊</span>
+						<span class="feature-text">Suivi de progression</span>
+					</div>
+					<div class="feature">
+						<span class="feature-icon">🌟</span>
+						<span class="feature-text">Collection de shinies</span>
+					</div>
+					<div class="feature">
+						<span class="feature-icon">👥</span>
+						<span class="feature-text">Communauté Team Kuroizana</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Login Section -->
+		<section class="login-section">
+			<div class="auth-box">
+				<h2>✨ Connexion</h2>
+				<p class="subtitle">Connectez-vous pour accéder à votre KuroZanDex</p>
+
+				<form id="login-form">
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input
+							type="email"
+							id="email"
+							name="email"
+							required
+							autocomplete="email"
+							placeholder="votre@email.com"
+						/>
+					</div>
+
+					<div class="form-group">
+						<label for="password">Mot de passe</label>
+						<input
+							type="password"
+							id="password"
+							name="password"
+							required
+							autocomplete="current-password"
+							placeholder="••••••••"
+						/>
+					</div>
+
+					<div id="error-message" class="error-message"></div>
+
+					<button type="submit" class="btn-primary" id="submit-btn">
+						Se connecter
+					</button>
+
+					<p class="auth-link">
+						Pas encore de compte ? <a href="/register">S'inscrire</a>
+					</p>
+				</form>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.landing-container {
+		min-height: 100vh;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0;
+	}
+
+	/* Hero Section */
+	.hero-section {
+		background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+		padding: 3rem 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-right: 1px solid #333;
+	}
+
+	.hero-content {
+		max-width: 500px;
+		width: 100%;
+	}
+
+	.logo-container {
+		text-align: center;
+		margin-bottom: 1.5rem;
+	}
+
+	.logo-icon {
+		font-size: 4rem;
+		display: inline-block;
+		animation: float 3s ease-in-out infinite;
+	}
+
+	@keyframes float {
+		0%, 100% { transform: translateY(0px); }
+		50% { transform: translateY(-10px); }
+	}
+
+	.hero-title {
+		font-size: 3.5rem;
+		margin: 0 0 0.5rem 0;
+		text-align: center;
+		background: linear-gradient(135deg, #ffcb05 0%, #ffd700 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		font-weight: 800;
+	}
+
+	.hero-subtitle {
+		font-size: 1.25rem;
+		text-align: center;
+		color: #ccc;
+		margin: 0 0 2rem 0;
+	}
+
+	.description-box {
+		background: rgba(255, 203, 5, 0.05);
+		border: 1px solid rgba(255, 203, 5, 0.2);
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.description {
+		color: #ccc;
+		line-height: 1.6;
+		margin: 0 0 1rem 0;
+		text-align: center;
+	}
+
+	.description:last-child {
+		margin-bottom: 0;
+	}
+
+	.description strong {
+		color: #ffcb05;
+		font-weight: 600;
+	}
+
+	.features {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.feature {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem;
+		background: #1a1a1a;
+		border: 1px solid #333;
+		border-radius: 8px;
+		transition: border-color 0.3s, transform 0.3s;
+	}
+
+	.feature:hover {
+		border-color: #ffcb05;
+		transform: translateX(5px);
+	}
+
+	.feature-icon {
+		font-size: 1.5rem;
+	}
+
+	.feature-text {
+		color: #fff;
+		font-weight: 500;
+	}
+
+	/* Login Section */
+	.login-section {
+		background: #0f0f0f;
+		padding: 3rem 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.auth-box {
+		background: #1a1a1a;
+		border: 1px solid #333;
+		border-radius: 12px;
+		padding: 3rem 2rem;
+		max-width: 400px;
+		width: 100%;
+	}
+
+	h2 {
+		margin: 0 0 0.5rem 0;
+		font-size: 2rem;
+		text-align: center;
+	}
+
+	.subtitle {
+		text-align: center;
+		color: #888;
+		margin: 0 0 2rem 0;
+	}
+
+	.form-group {
+		margin-bottom: 1.5rem;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 0.5rem;
+		color: #ccc;
+		font-weight: 500;
+	}
+
+	input {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		background: #0f0f0f;
+		border: 1px solid #333;
+		border-radius: 8px;
+		color: #fff;
+		font-size: 1rem;
+		box-sizing: border-box;
+	}
+
+	input:focus {
+		outline: none;
+		border-color: #ffcb05;
+	}
+
+	.error-message {
+		color: #ff4444;
+		margin-bottom: 1rem;
+		padding: 0.75rem;
+		background: rgba(255, 68, 68, 0.1);
+		border: 1px solid #ff4444;
+		border-radius: 8px;
+		display: none;
+	}
+
+	.error-message.show {
+		display: block;
+	}
+
+	.btn-primary {
+		width: 100%;
+		padding: 0.875rem;
+		background: #ffcb05;
+		color: #000;
+		border: none;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.btn-primary:hover {
+		background: #e6b800;
+	}
+
+	.btn-primary:disabled {
+		background: #666;
+		cursor: not-allowed;
+	}
+
+	.auth-link {
+		text-align: center;
+		margin-top: 1.5rem;
+		color: #888;
+	}
+
+	.auth-link a {
+		color: #ffcb05;
+		text-decoration: none;
+	}
+
+	.auth-link a:hover {
+		text-decoration: underline;
+	}
+
+	/* Responsive Design */
+	@media (max-width: 968px) {
+		.landing-container {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-section {
+			border-right: none;
+			border-bottom: 1px solid #333;
+			padding: 3rem 1.5rem;
+		}
+
+		.hero-title {
+			font-size: 2.5rem;
+		}
+
+		.logo-icon {
+			font-size: 3rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.hero-title {
+			font-size: 2rem;
+		}
+
+		.hero-subtitle {
+			font-size: 1rem;
+		}
+
+		.description-box {
+			padding: 1rem;
+		}
+
+		.features {
+			gap: 0.75rem;
+		}
+
+		.feature {
+			padding: 0.75rem;
+		}
+	}
+</style>
+
+<script>
+	const form = document.getElementById('login-form') as HTMLFormElement;
+	const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+	form.addEventListener('submit', async (e) => {
+		e.preventDefault();
+
+		const formData = new FormData(form);
+		const email = formData.get('email') as string;
+		const password = formData.get('password') as string;
+
+		// Hide error
+		errorMessage.classList.remove('show');
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Connexion...';
+
+		try {
+			const response = await fetch('/api/auth/login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email, password }),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || 'Erreur de connexion');
+			}
+
+			// Redirect to home
+			window.location.href = '/';
+		} catch (error) {
+			errorMessage.textContent = error instanceof Error ? error.message : 'Erreur de connexion';
+			errorMessage.classList.add('show');
+			submitBtn.disabled = false;
+			submitBtn.textContent = 'Se connecter';
+		}
+	});
+</script>

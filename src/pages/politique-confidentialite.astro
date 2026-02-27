@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = false;
+---
+
+<Layout>
+	<main class="legal-page">
+		<div class="legal-container">
+			<h1>Politique de Confidentialité</h1>
+
+			<section>
+				<h2>1. Introduction</h2>
+				<p>
+					La protection de vos données personnelles est une priorité pour KuroZanDex.
+					Cette politique de confidentialité explique quelles données nous collectons,
+					comment nous les utilisons et quels sont vos droits.
+				</p>
+			</section>
+
+			<section>
+				<h2>2. Données collectées</h2>
+				<p>Nous collectons les données suivantes :</p>
+				<ul>
+					<li><strong>Email :</strong> Utilisé pour créer et identifier votre compte</li>
+					<li><strong>Mot de passe :</strong> Stocké de manière sécurisée et chiffrée (hashé avec bcrypt)</li>
+					<li><strong>Pokémon capturés :</strong> Liste des Pokémon Shiny que vous avez marqués comme capturés</li>
+					<li><strong>Cookies d'authentification :</strong> Utilisés pour maintenir votre session de connexion</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>3. Utilisation des données</h2>
+				<p>Vos données sont utilisées uniquement pour :</p>
+				<ul>
+					<li>Créer et gérer votre compte utilisateur</li>
+					<li>Sauvegarder votre progression (Pokémon capturés)</li>
+					<li>Vous authentifier lors de vos visites</li>
+					<li>Vous permettre de modifier vos informations de compte</li>
+				</ul>
+				<p><strong>Nous ne vendons, ne louons ni ne partageons vos données avec des tiers.</strong></p>
+			</section>
+
+			<section>
+				<h2>4. Sécurité des données</h2>
+				<p>Nous prenons la sécurité de vos données au sérieux :</p>
+				<ul>
+					<li>Les mots de passe sont chiffrés avec bcrypt avant stockage</li>
+					<li>Les connexions utilisent des cookies HTTP-only pour prévenir les attaques XSS</li>
+					<li>L'accès à la base de données est sécurisé</li>
+					<li>Les tokens d'authentification ont une durée de vie limitée</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>5. Cookies</h2>
+				<p>Nous utilisons des cookies essentiels au fonctionnement du site :</p>
+				<ul>
+					<li><strong>access_token :</strong> Token d'accès de courte durée (15 minutes)</li>
+					<li><strong>refresh_token :</strong> Token de rafraîchissement (30 jours)</li>
+					<li><strong>cookie_consent :</strong> Stocke votre consentement aux cookies</li>
+				</ul>
+				<p>Ces cookies sont nécessaires pour vous maintenir connecté et ne peuvent pas être désactivés.</p>
+			</section>
+
+			<section>
+				<h2>6. Conservation des données</h2>
+				<p>
+					Vos données sont conservées tant que votre compte est actif. Vous pouvez demander
+					la suppression de votre compte et de toutes vos données à tout moment en nous contactant.
+				</p>
+			</section>
+
+			<section>
+				<h2>7. Vos droits</h2>
+				<p>Conformément au RGPD, vous disposez des droits suivants :</p>
+				<ul>
+					<li><strong>Droit d'accès :</strong> Vous pouvez consulter vos données via votre profil</li>
+					<li><strong>Droit de rectification :</strong> Vous pouvez modifier votre email et mot de passe</li>
+					<li><strong>Droit à l'effacement :</strong> Contactez-nous pour supprimer votre compte</li>
+					<li><strong>Droit à la portabilité :</strong> Contactez-nous pour obtenir vos données</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>8. Stockage des données</h2>
+				<p>
+					Les données sont stockées dans une base de données MongoDB sécurisée.
+					Seules les données essentielles au fonctionnement du service sont collectées.
+				</p>
+			</section>
+
+			<section>
+				<h2>9. Contact</h2>
+				<p>
+					Pour toute question concernant vos données personnelles ou pour exercer vos droits,
+					contactez-nous à :
+				</p>
+				<p><a href="mailto:Trulesdoniphane974@proton.me">Trulesdoniphane974@proton.me</a></p>
+			</section>
+
+			<section>
+				<h2>10. Modifications</h2>
+				<p>
+					Cette politique de confidentialité peut être mise à jour. La date de dernière mise à jour
+					sera indiquée ci-dessous.
+				</p>
+				<p><strong>Dernière mise à jour :</strong> {new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+			</section>
+
+			<div class="back-link-container">
+				<a href="/" class="back-link">← Retour à l'accueil</a>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.legal-page {
+		min-height: 100vh;
+		padding: 2rem 1rem;
+	}
+
+	.legal-container {
+		max-width: 800px;
+		margin: 0 auto;
+		background: #1a1a1a;
+		border: 1px solid #333;
+		border-radius: 12px;
+		padding: 3rem 2rem;
+	}
+
+	h1 {
+		color: #ffcb05;
+		margin: 0 0 2rem 0;
+		font-size: 2rem;
+		text-align: center;
+	}
+
+	section {
+		margin-bottom: 2rem;
+	}
+
+	h2 {
+		color: #fff;
+		font-size: 1.25rem;
+		margin: 0 0 1rem 0;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid #333;
+	}
+
+	p {
+		color: #ccc;
+		line-height: 1.6;
+		margin: 0.75rem 0;
+	}
+
+	ul {
+		color: #ccc;
+		line-height: 1.8;
+		margin: 0.75rem 0;
+		padding-left: 1.5rem;
+	}
+
+	li {
+		margin: 0.5rem 0;
+	}
+
+	strong {
+		color: #fff;
+	}
+
+	a {
+		color: #ffcb05;
+		text-decoration: none;
+		transition: opacity 0.2s;
+	}
+
+	a:hover {
+		opacity: 0.8;
+		text-decoration: underline;
+	}
+
+	.back-link-container {
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid #333;
+		text-align: center;
+	}
+
+	.back-link {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		background: #333;
+		color: #fff;
+		border-radius: 8px;
+		text-decoration: none;
+		transition: background 0.2s;
+	}
+
+	.back-link:hover {
+		background: #444;
+		text-decoration: none;
+	}
+
+	@media (max-width: 768px) {
+		.legal-container {
+			padding: 2rem 1.5rem;
+		}
+
+		h1 {
+			font-size: 1.5rem;
+		}
+
+		h2 {
+			font-size: 1.1rem;
+		}
+	}
+</style>

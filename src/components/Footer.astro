@@ -1,0 +1,112 @@
+---
+---
+
+<footer class="site-footer">
+	<div class="footer-content">
+		<div class="footer-section">
+			<h3>KuroZanDex</h3>
+			<p>Trackez votre collection de Pokémon Shiny</p>
+		</div>
+
+		<div class="footer-section">
+			<h4>Légal</h4>
+			<ul>
+				<li><a href="/mentions-legales">Mentions Légales</a></li>
+				<li><a href="/politique-confidentialite">Politique de Confidentialité</a></li>
+			</ul>
+		</div>
+
+		<div class="footer-section">
+			<h4>Contact</h4>
+			<p>Trules Doniphane</p>
+			<p><a href="mailto:Trulesdoniphane974@proton.me">Trulesdoniphane974@proton.me</a></p>
+		</div>
+	</div>
+
+	<div class="footer-bottom">
+		<p>&copy; {new Date().getFullYear()} KuroZanDex - Tous droits réservés</p>
+		
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: #0a0a0a;
+		border-top: 1px solid #333;
+		margin-top: auto;
+		padding: 2rem 1rem 1rem;
+	}
+
+	.footer-content {
+		max-width: 1400px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	.footer-section h3 {
+		color: #ffcb05;
+		margin: 0 0 0.5rem 0;
+		font-size: 1.25rem;
+	}
+
+	.footer-section h4 {
+		color: #fff;
+		margin: 0 0 0.75rem 0;
+		font-size: 1rem;
+	}
+
+	.footer-section p {
+		color: #888;
+		margin: 0.25rem 0;
+		font-size: 0.875rem;
+	}
+
+	.footer-section ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.footer-section ul li {
+		margin-bottom: 0.5rem;
+	}
+
+	.footer-section a {
+		color: #aaa;
+		text-decoration: none;
+		transition: color 0.2s;
+		font-size: 0.875rem;
+	}
+
+	.footer-section a:hover {
+		color: #ffcb05;
+	}
+
+	.footer-bottom {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding-top: 1.5rem;
+		border-top: 1px solid #222;
+		text-align: center;
+	}
+
+	.footer-bottom p {
+		color: #666;
+		margin: 0.5rem 0;
+		font-size: 0.75rem;
+	}
+
+	.disclaimer {
+		font-style: italic;
+	}
+
+	@media (max-width: 768px) {
+		.footer-content {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+	}
+</style>
