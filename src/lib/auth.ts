@@ -84,12 +84,35 @@ export function getUserFromCookies(cookies: AstroCookies): JWTPayload | null {
 
 // Clear auth cookies
 export function clearAuthCookies(cookies: AstroCookies) {
-	cookies.delete('access_token', { 
-		path: '/',
-		secure: true,
-		sameSite: 'strict'
+	// Delete with different option combinations to ensure removal
+	// regardless of how the cookie was originally set
+	const cookieNames = ['access_token', 'auth_token'];
+
+	cookieNames.forEach(name => {
+		// Try with secure: true, sameSite: 'strict'
+		cookies.delete(name, {
+			path: '/',
+			secure: true,
+			sameSite: 'strict'
+		});
+
+		// Try with secure: true, sameSite: 'lax'
+		cookies.delete(name, {
+			path: '/',
+			secure: true,
+			sameSite: 'lax'
+		});
+
+		// Try with secure: false
+		cookies.delete(name, {
+			path: '/',
+			secure: false,
+			sameSite: 'lax'
+		});
+
+		// Try with minimal options
+		cookies.delete(name, { path: '/' });
 	});
-	cookies.delete('auth_token', { path: '/' }); // Legacy
 }
 
 // Legacy function

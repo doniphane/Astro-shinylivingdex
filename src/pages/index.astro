@@ -562,9 +562,16 @@ const pokemon = data.results.map((p: any, index: number) => ({
 	// Logout handler
 	document.getElementById('logout-btn')?.addEventListener('click', async () => {
 		try {
-			await fetch('/api/auth/logout', { method: 'POST' });
+			const response = await fetch('/api/auth/logout', {
+				method: 'POST',
+				credentials: 'include' // Ensure cookies are sent
+			});
+
+			// Redirect regardless of response to ensure logout
 			window.location.href = '/login';
 		} catch (error) {
+			// Force redirect even if request fails
+			window.location.href = '/login';
 		}
 	});
 
