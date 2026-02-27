@@ -98,8 +98,8 @@ export function verifyToken(token: string): JWTPayload | null {
 export function setAccessTokenCookie(cookies: AstroCookies, token: string) {
 	cookies.set('access_token', token, {
 		httpOnly: true,
-		secure: import.meta.env.PROD,
-		sameSite: import.meta.env.PROD ? 'none' : 'lax',
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 		path: '/',
 		maxAge: 15 * 60, // 15 minutes
 	});
@@ -109,8 +109,8 @@ export function setAccessTokenCookie(cookies: AstroCookies, token: string) {
 export function setRefreshTokenCookie(cookies: AstroCookies, token: string) {
 	cookies.set('refresh_token', token, {
 		httpOnly: true,
-		secure: import.meta.env.PROD,
-		sameSite: import.meta.env.PROD ? 'none' : 'lax',
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
 		path: '/',
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 	});
@@ -161,8 +161,8 @@ export async function revokeRefreshToken(token: string) {
 export function clearAuthCookies(cookies: AstroCookies) {
 	const cookieOptions = {
 		path: '/',
-		secure: import.meta.env.PROD,
-		sameSite: (import.meta.env.PROD ? 'none' : 'lax') as const,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
 	};
 
 	cookies.delete('access_token', cookieOptions);
