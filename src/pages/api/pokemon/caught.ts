@@ -19,12 +19,19 @@ export const GET: APIRoute = async ({ cookies }) => {
 
 		await connectDB();
 
-		const caughtPokemon = await CaughtPokemon.find({ userId: user.userId }).select('pokemonId');
+		const caughtPokemon = await CaughtPokemon.find({ userId: user.userId });
 
-		// Return array of pokemon IDs
-		const pokemonIds = caughtPokemon.map((p) => p.pokemonId);
+		// Return detailed caught pokemon data
+		const pokemonData: Record<number, { caughtAt: string; obtainMethod: string; encounterCount: number }> = {};
+		caughtPokemon.forEach((p) => {
+			pokemonData[p.pokemonId] = {
+				caughtAt: p.caughtAt.toISOString(),
+				obtainMethod: p.obtainMethod,
+				encounterCount: p.encounterCount,
+			};
+		});
 
-		return new Response(JSON.stringify({ pokemonIds }), {
+		return new Response(JSON.stringify({ pokemonData }), {
 			status: 200,
 			headers: { 'Content-Type': 'application/json' },
 		});
@@ -48,10 +55,24 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			});
 		}
 
-		const { pokemonId } = await request.json();
+		const { pokemonId, obtainMethod, encounterCount } = await request.json();
 
 		if (!pokemonId || typeof pokemonId !== 'number') {
 			return new Response(JSON.stringify({ error: 'ID Pokémon invalide' }), {
+				status: 400,
+				headers: { 'Content-Type': 'application/json' },
+			});
+		}
+
+		if (!obtainMethod || !['encounter', 'masuda'].includes(obtainMethod)) {
+			return new Response(JSON.stringify({ error: 'Méthode d\'obtention invalide' }), {
+				status: 400,
+				headers: { 'Content-Type': 'application/json' },
+			});
+		}
+
+		if (encounterCount === undefined || typeof encounterCount !== 'number' || encounterCount < 0) {
+			return new Response(JSON.stringify({ error: 'Nombre d\'encounters invalide' }), {
 				status: 400,
 				headers: { 'Content-Type': 'application/json' },
 			});
@@ -72,13 +93,23 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 			});
 		}
 
-		// Create new caught Pokémon
-		await CaughtPokemon.create({
+		// Create new caught Pokémon with encounter data
+		const caughtPokemon = await CaughtPokemon.create({
 			userId: user.userId,
 			pokemonId,
+			obtainMethod,
+			encounterCount,
+			caughtAt: new Date(),
 		});
 
-		return new Response(JSON.stringify({ success: true }), {
+		const response = {
+			success: true,
+			caughtAt: caughtPokemon.caughtAt.toISOString(),
+			obtainMethod: caughtPokemon.obtainMethod,
+			encounterCount: caughtPokemon.encounterCount,
+		};
+
+		return new Response(JSON.stringify(response), {
 			status: 201,
 			headers: { 'Content-Type': 'application/json' },
 		});

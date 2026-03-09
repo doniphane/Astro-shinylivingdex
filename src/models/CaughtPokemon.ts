@@ -4,6 +4,8 @@ export interface ICaughtPokemon extends Document {
 	userId: mongoose.Types.ObjectId;
 	pokemonId: number;
 	caughtAt: Date;
+	obtainMethod: 'encounter' | 'masuda';
+	encounterCount: number;
 }
 
 const CaughtPokemonSchema = new Schema<ICaughtPokemon>({
@@ -19,6 +21,18 @@ const CaughtPokemonSchema = new Schema<ICaughtPokemon>({
 	caughtAt: {
 		type: Date,
 		default: Date.now,
+	},
+	obtainMethod: {
+		type: String,
+		enum: ['encounter', 'masuda'],
+		required: true,
+		default: 'encounter',
+	},
+	encounterCount: {
+		type: Number,
+		required: true,
+		default: 0,
+		min: 0,
 	},
 });
 

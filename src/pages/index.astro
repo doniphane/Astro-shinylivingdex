@@ -106,6 +106,37 @@ const pokemon = data.results.map((p: any, index: number) => ({
 						<span class="pokemon-name">{p.name}</span>
 					</div>
 					<div class="checkmark">✓</div>
+
+					<!-- Encounter section (visible when not caught) -->
+					<div class="encounter-section">
+						<div class="encounter-toggle">
+							<button class="toggle-btn active" data-type="encounter">Normal</button>
+							<button class="toggle-btn" data-type="masuda">Masuda</button>
+						</div>
+						<div class="encounter-counter">
+							<input type="number" class="counter-input" min="0" value="0" />
+						</div>
+						<div class="encounter-controls">
+							<button class="counter-btn decrement" data-action="decrement">-</button>
+							<button class="counter-btn increment" data-action="increment">+</button>
+						</div>
+					</div>
+
+					<!-- Caught info section (visible when caught) -->
+					<div class="caught-info-section" style="display: none;">
+						<div class="caught-info-item">
+							<span class="caught-label">Méthode:</span>
+							<span class="caught-method">-</span>
+						</div>
+						<div class="caught-info-item">
+							<span class="caught-label">Encounters:</span>
+							<span class="caught-count">-</span>
+						</div>
+						<div class="caught-info-item">
+							<span class="caught-label">Date:</span>
+							<span class="caught-date">-</span>
+						</div>
+					</div>
 				</div>
 			))}
 		</div>
@@ -285,7 +316,7 @@ const pokemon = data.results.map((p: any, index: number) => ({
 
 	.pokemon-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 		gap: 0.75rem;
 	}
 
@@ -380,12 +411,181 @@ const pokemon = data.results.map((p: any, index: number) => ({
 	.pokemon-card.hidden {
 		display: none;
 	}
+
+	.encounter-section {
+		width: 100%;
+		margin-top: 0.5rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid #333;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.encounter-toggle {
+		display: flex;
+		gap: 0.25rem;
+		width: 100%;
+	}
+
+	.toggle-btn {
+		flex: 1;
+		padding: 0.25rem 0.5rem;
+		background: #222;
+		border: 1px solid #333;
+		border-radius: 4px;
+		color: #888;
+		font-size: 0.7rem;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.toggle-btn:hover {
+		background: #2a2a2a;
+		border-color: #444;
+	}
+
+	.toggle-btn.active {
+		background: #ffcb05;
+		color: #000;
+		border-color: #ffcb05;
+		font-weight: 600;
+	}
+
+	.encounter-counter {
+		text-align: center;
+		padding: 0.25rem 0;
+	}
+
+	.counter-input {
+		width: 100%;
+		text-align: center;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #ffcb05;
+		background: #0d0d0d;
+		border: 1px solid #333;
+		border-radius: 4px;
+		padding: 0.25rem;
+		-moz-appearance: textfield;
+	}
+
+	.counter-input::-webkit-outer-spin-button,
+	.counter-input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	.counter-input:focus {
+		outline: none;
+		border-color: #ffcb05;
+		background: #1a1a1a;
+	}
+
+	.encounter-controls {
+		display: flex;
+		gap: 0.25rem;
+		width: 100%;
+	}
+
+	.counter-btn {
+		flex: 1;
+		padding: 0.5rem;
+		background: #1a1a1a;
+		border: 1px solid #333;
+		border-radius: 4px;
+		color: #fff;
+		font-size: 1rem;
+		font-weight: 700;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.counter-btn:hover {
+		background: #2a2a2a;
+		border-color: #444;
+	}
+
+	.counter-btn.increment {
+		background: #2a5a2a;
+		border-color: #4CAF50;
+	}
+
+	.counter-btn.increment:hover {
+		background: #3a6a3a;
+		border-color: #66BB6A;
+	}
+
+	.counter-btn.decrement {
+		background: #5a2a2a;
+		border-color: #f44336;
+	}
+
+	.counter-btn.decrement:hover {
+		background: #6a3a3a;
+		border-color: #e57373;
+	}
+
+	.counter-btn:active {
+		transform: scale(0.95);
+	}
+
+	.caught-info-section {
+		width: 100%;
+		margin-top: 0.5rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid #4CAF50;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.caught-info-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.75rem;
+	}
+
+	.caught-label {
+		color: #888;
+		font-weight: 500;
+	}
+
+	.caught-method {
+		color: #ffcb05;
+		font-weight: 700;
+		text-transform: capitalize;
+	}
+
+	.caught-count {
+		color: #4CAF50;
+		font-weight: 700;
+	}
+
+	.caught-date {
+		color: #fff;
+		font-size: 0.65rem;
+	}
+
+	.pokemon-card.caught .encounter-section {
+		display: none;
+	}
+
+	.pokemon-card.caught .caught-info-section {
+		display: flex !important;
+	}
 </style>
 
 <script>
 	// Caught Pokémon state
 	let caughtPokemon = new Set<number>();
+	let caughtPokemonData: Record<number, { caughtAt: string; obtainMethod: string; encounterCount: number }> = {};
 	let isLoading = false;
+
+	// Encounters state
+	let encounters: Record<number, { encounterCount: number; masudaCount: number }> = {};
+	let activeEncounterType: Record<number, 'encounter' | 'masuda'> = {};
 
 	// Load caught Pokémon from API
 	async function loadCaughtPokemon() {
@@ -400,10 +600,58 @@ const pokemon = data.results.map((p: any, index: number) => ({
 			}
 
 			const data = await response.json();
-			caughtPokemon = new Set<number>(data.pokemonIds);
+			caughtPokemonData = data.pokemonData || {};
+			caughtPokemon = new Set<number>(Object.keys(caughtPokemonData).map(id => parseInt(id)));
 			applyCaughtState();
 		} catch (error) {
+			// Error loading caught pokemon
 		}
+	}
+
+	// Load encounters from API
+	async function loadEncounters() {
+		try {
+			const response = await fetch('/api/pokemon/encounters');
+			if (!response.ok) {
+				if (response.status === 401) {
+					window.location.href = '/login';
+					return;
+				}
+				throw new Error('Failed to load encounters');
+			}
+
+			const data = await response.json();
+			encounters = data.encounters;
+
+			// Initialize active encounter type for all Pokémon (default to 'encounter')
+			document.querySelectorAll('.pokemon-card').forEach((card) => {
+				const id = parseInt(card.getAttribute('data-id') || '0');
+				activeEncounterType[id] = 'encounter';
+			});
+
+			applyEncounterState();
+		} catch (error) {
+		}
+	}
+
+	// Apply encounter state to all cards
+	function applyEncounterState() {
+		document.querySelectorAll('.pokemon-card').forEach((card) => {
+			const id = parseInt(card.getAttribute('data-id') || '0');
+			updateEncounterDisplay(card as HTMLElement, id);
+		});
+	}
+
+	// Update encounter display for a specific card
+	function updateEncounterDisplay(card: HTMLElement, pokemonId: number) {
+		const counterInput = card.querySelector('.counter-input') as HTMLInputElement;
+		if (!counterInput) return;
+
+		const encounterData = encounters[pokemonId] || { encounterCount: 0, masudaCount: 0 };
+		const currentType = activeEncounterType[pokemonId] || 'encounter';
+		const count = currentType === 'encounter' ? encounterData.encounterCount : encounterData.masudaCount;
+
+		counterInput.value = count.toString();
 	}
 
 	// Apply caught state on page load
@@ -412,51 +660,296 @@ const pokemon = data.results.map((p: any, index: number) => ({
 			const id = parseInt(card.getAttribute('data-id') || '0');
 			if (caughtPokemon.has(id)) {
 				card.classList.add('caught');
+				updateCaughtInfo(card as HTMLElement, id);
 			}
 		});
 		updateStats();
 	}
 
-	// Toggle caught state
+	// Update caught info display
+	function updateCaughtInfo(card: HTMLElement, pokemonId: number) {
+		const data = caughtPokemonData[pokemonId];
+
+		if (!data) {
+			return;
+		}
+
+		const methodSpan = card.querySelector('.caught-method');
+		const countSpan = card.querySelector('.caught-count');
+		const dateSpan = card.querySelector('.caught-date');
+
+		if (methodSpan) {
+			methodSpan.textContent = data.obtainMethod === 'masuda' ? 'Masuda' : 'Normal';
+		}
+		if (countSpan) {
+			countSpan.textContent = data.encounterCount.toString();
+		}
+		if (dateSpan) {
+			const date = new Date(data.caughtAt);
+			dateSpan.textContent = date.toLocaleDateString('fr-FR', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric'
+			});
+		}
+	}
+
+	// Handle manual input changes
+	document.getElementById('pokemon-grid')?.addEventListener('input', async (e) => {
+		const target = e.target as HTMLElement;
+
+		// Handle counter input manual changes
+		if (target.classList.contains('counter-input')) {
+			e.stopPropagation();
+			if (isLoading) return;
+
+			const input = target as HTMLInputElement;
+			const card = input.closest('.pokemon-card');
+			if (!card) return;
+
+			const id = parseInt(card.getAttribute('data-id') || '0');
+
+			// Don't allow counter changes if pokemon is caught
+			if (caughtPokemon.has(id)) {
+				return;
+			}
+
+			const newValue = parseInt(input.value) || 0;
+			const currentType = activeEncounterType[id] || 'encounter';
+
+			// Ensure value is not negative
+			if (newValue < 0) {
+				input.value = '0';
+				return;
+			}
+
+			// Optimistic UI update
+			if (!encounters[id]) {
+				encounters[id] = { encounterCount: 0, masudaCount: 0 };
+			}
+
+			const oldValue = currentType === 'encounter' ? encounters[id].encounterCount : encounters[id].masudaCount;
+
+			if (currentType === 'encounter') {
+				encounters[id].encounterCount = newValue;
+			} else {
+				encounters[id].masudaCount = newValue;
+			}
+
+			// Save to API
+			isLoading = true;
+			try {
+				const response = await fetch('/api/pokemon/encounters', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						pokemonId: id,
+						type: currentType,
+						action: 'set',
+						value: newValue,
+					}),
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to update encounter');
+				}
+
+				// Update with server response
+				const data = await response.json();
+				encounters[id] = {
+					encounterCount: data.encounterCount,
+					masudaCount: data.masudaCount,
+				};
+				updateEncounterDisplay(card as HTMLElement, id);
+			} catch (error) {
+				// Revert optimistic update
+				if (currentType === 'encounter') {
+					encounters[id].encounterCount = oldValue;
+				} else {
+					encounters[id].masudaCount = oldValue;
+				}
+				updateEncounterDisplay(card as HTMLElement, id);
+			} finally {
+				isLoading = false;
+			}
+		}
+	});
+
+	// Toggle caught state and handle encounter buttons
 	document.getElementById('pokemon-grid')?.addEventListener('click', async (e) => {
-		const card = (e.target as HTMLElement).closest('.pokemon-card');
+		const target = e.target as HTMLElement;
+
+		// Handle encounter toggle buttons (Normal/Masuda)
+		const toggleBtn = target.closest('.toggle-btn');
+		if (toggleBtn) {
+			e.stopPropagation();
+			const card = toggleBtn.closest('.pokemon-card');
+			if (!card) return;
+
+			const id = parseInt(card.getAttribute('data-id') || '0');
+
+			// Don't allow toggle if pokemon is caught
+			if (caughtPokemon.has(id)) {
+				return;
+			}
+
+			const type = toggleBtn.getAttribute('data-type') as 'encounter' | 'masuda';
+
+			// Update active state
+			activeEncounterType[id] = type;
+
+			// Update UI
+			card.querySelectorAll('.toggle-btn').forEach((btn) => btn.classList.remove('active'));
+			toggleBtn.classList.add('active');
+
+			// Update counter display
+			updateEncounterDisplay(card as HTMLElement, id);
+			return;
+		}
+
+		// Handle counter increment/decrement buttons
+		const counterBtn = target.closest('.counter-btn');
+		if (counterBtn) {
+			e.stopPropagation();
+			if (isLoading) return;
+
+			const card = counterBtn.closest('.pokemon-card');
+			if (!card) return;
+
+			const id = parseInt(card.getAttribute('data-id') || '0');
+
+			// Don't allow counter changes if pokemon is caught
+			if (caughtPokemon.has(id)) {
+				return;
+			}
+
+			const action = counterBtn.getAttribute('data-action') as 'increment' | 'decrement';
+			const currentType = activeEncounterType[id] || 'encounter';
+
+			// Optimistic UI update
+			const encounterData = encounters[id] || { encounterCount: 0, masudaCount: 0 };
+			const oldCount = currentType === 'encounter' ? encounterData.encounterCount : encounterData.masudaCount;
+			const newCount = Math.max(0, oldCount + (action === 'increment' ? 1 : -1));
+
+			if (!encounters[id]) {
+				encounters[id] = { encounterCount: 0, masudaCount: 0 };
+			}
+
+			if (currentType === 'encounter') {
+				encounters[id].encounterCount = newCount;
+			} else {
+				encounters[id].masudaCount = newCount;
+			}
+
+			updateEncounterDisplay(card as HTMLElement, id);
+
+			// Save to API
+			isLoading = true;
+			try {
+				const response = await fetch('/api/pokemon/encounters', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						pokemonId: id,
+						type: currentType,
+						action,
+					}),
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to update encounter');
+				}
+
+				// Update with server response
+				const data = await response.json();
+				encounters[id] = {
+					encounterCount: data.encounterCount,
+					masudaCount: data.masudaCount,
+				};
+				updateEncounterDisplay(card as HTMLElement, id);
+			} catch (error) {
+				// Revert optimistic update
+				if (currentType === 'encounter') {
+					encounters[id].encounterCount = oldCount;
+				} else {
+					encounters[id].masudaCount = oldCount;
+				}
+				updateEncounterDisplay(card as HTMLElement, id);
+			} finally {
+				isLoading = false;
+			}
+			return;
+		}
+
+		// Toggle caught state (only if clicking on the card itself, not buttons)
+		const card = target.closest('.pokemon-card');
 		if (!card || isLoading) return;
+
+		// Don't toggle if clicking on encounter section, caught info section, or input
+		if (target.closest('.encounter-section') || target.closest('.caught-info-section') || target.classList.contains('counter-input')) return;
 
 		const id = parseInt(card.getAttribute('data-id') || '0');
 		const wasCaught = caughtPokemon.has(id);
 
-		// Optimistic UI update
-		if (wasCaught) {
-			caughtPokemon.delete(id);
-			card.classList.remove('caught');
-		} else {
-			caughtPokemon.add(id);
-			card.classList.add('caught');
-		}
-		updateStats();
-
 		// Save to API
 		isLoading = true;
 		try {
-			const response = await fetch('/api/pokemon/caught', {
-				method: wasCaught ? 'DELETE' : 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ pokemonId: id }),
-			});
+			if (wasCaught) {
+				// Uncatch - optimistic UI update
+				caughtPokemon.delete(id);
+				delete caughtPokemonData[id];
+				card.classList.remove('caught');
+				updateStats();
 
-			if (!response.ok) {
-				throw new Error('Failed to update Pokémon');
+				const response = await fetch('/api/pokemon/caught', {
+					method: 'DELETE',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ pokemonId: id }),
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to uncatch Pokémon');
+				}
+			} else {
+				// Catch - get current encounter data
+				const currentType = activeEncounterType[id] || 'encounter';
+				const encounterData = encounters[id] || { encounterCount: 0, masudaCount: 0 };
+				const encounterCount = currentType === 'encounter' ? encounterData.encounterCount : encounterData.masudaCount;
+
+				const response = await fetch('/api/pokemon/caught', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						pokemonId: id,
+						obtainMethod: currentType,
+						encounterCount: encounterCount,
+					}),
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to catch Pokémon');
+				}
+
+				const data = await response.json();
+
+				// Update state with server response
+				caughtPokemon.add(id);
+				caughtPokemonData[id] = {
+					caughtAt: data.caughtAt,
+					obtainMethod: data.obtainMethod,
+					encounterCount: data.encounterCount,
+				};
+
+				card.classList.add('caught');
+				updateCaughtInfo(card as HTMLElement, id);
+				updateStats();
 			}
 		} catch (error) {
-			// Revert optimistic update
+			// Revert optimistic update if it was an uncatch
 			if (wasCaught) {
-				caughtPokemon.add(id);
-				card.classList.add('caught');
-			} else {
-				caughtPokemon.delete(id);
-				card.classList.remove('caught');
+				// We need to reload the data from server
+				loadCaughtPokemon();
 			}
-			updateStats();
 		} finally {
 			isLoading = false;
 		}
@@ -581,4 +1074,5 @@ const pokemon = data.results.map((p: any, index: number) => ({
 
 	// Initialize
 	loadCaughtPokemon();
+	loadEncounters();
 </script>
